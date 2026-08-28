@@ -1,0 +1,72 @@
+[
+  {
+    "query": "cuantos dias de vacaciones me corresponden al ano",
+    "expected_intent": "hr",
+    "tipo": "directa"
+  },
+  {
+    "query": "mi esposa esta embarazada, que licencia de paternidad me dan",
+    "expected_intent": "hr",
+    "tipo": "parafraseada"
+  },
+  {
+    "query": "necesito un certificado laboral para el banco",
+    "expected_intent": "hr",
+    "tipo": "directa"
+  },
+  {
+    "query": "la vpn me tira error 502 cuando intento conectarme",
+    "expected_intent": "tech",
+    "tipo": "directa"
+  },
+  {
+    "query": "olvide mi contrasena corporativa y no puedo entrar",
+    "expected_intent": "tech",
+    "tipo": "directa"
+  },
+  {
+    "query": "quiero instalar una herramienta que no viene en el computador",
+    "expected_intent": "tech",
+    "tipo": "parafraseada"
+  },
+  {
+    "query": "cuanto se demora el pago de un reembolso de gastos",
+    "expected_intent": "finance",
+    "tipo": "directa"
+  },
+  {
+    "query": "un proveedor me pregunta por que no le han pagado su factura",
+    "expected_intent": "finance",
+    "tipo": "directa"
+  },
+  {
+    "query": "necesito plata por adelantado para un viaje de trabajo",
+    "expected_intent": "finance",
+    "tipo": "parafraseada"
+  },
+  {
+    "query": "me pagaron mal la quincena, me falto plata",
+    "expected_intent": "hr",
+    "tipo": "borde_ambiguo"
+  },
+  {
+    "query": "no puedo entrar al portal de nomina, me sale error de acceso",
+    "expected_intent": "tech",
+    "tipo": "borde_ambiguo"
+  },
+  {
+    "query": "voy a renunciar el mes entrante, que hago con el computador que me asignaron",
+    "expected_intent": "hr",
+    "tipo": "borde_multi_intencion"
+  },
+  {
+    "query": "cual es la capital de Australia",
+    "expected_intent": "fuera_de_alcance",
+    "tipo": "borde_fuera_de_alcance"
+  },
+  {
+    "query": "hola",
+    "expected_intent": "fuera_de_alcance",
+    "tipo": "borde_mal_formada"
+  }
+]

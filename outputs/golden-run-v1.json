@@ -1,0 +1,128 @@
+[
+  {
+    "query": "cuantos dias de vacaciones me corresponden al ano",
+    "intent": "hr",
+    "response": "Te corresponden 15 días hábiles de vacaciones por cada año completo trabajado, acumulando 1,25 días por mes trabajado.",
+    "trace_id": "7b0813e63271d5a5f3fc21a46c96d759",
+    "expected_intent": "hr",
+    "tipo": "directa",
+    "acierto": true
+  },
+  {
+    "query": "mi esposa esta embarazada, que licencia de paternidad me dan",
+    "intent": "hr",
+    "response": "La licencia de paternidad es de tres semanas en total: dos semanas remuneradas y una semana adicional como beneficio interno. Debe solicitarse con el registro civil del recién nacido.",
+    "trace_id": "5e775560974e4761d50dbf443ccbc9dd",
+    "expected_intent": "hr",
+    "tipo": "parafraseada",
+    "acierto": true
+  },
+  {
+    "query": "necesito un certificado laboral para el banco",
+    "intent": "hr",
+    "response": "Puedes obtener tu certificado laboral desde el portal en la sección Mis Documentos. Allí podrás elegir si incluye el salario y el cargo, y te llegará a tu correo en formato PDF firmado digitalmente.",
+    "trace_id": "04b5db6d31f23d0e4840c997b0838657",
+    "expected_intent": "hr",
+    "tipo": "directa",
+    "acierto": true
+  },
+  {
+    "query": "la vpn me tira error 502 cuando intento conectarme",
+    "intent": "tech",
+    "response": "Un error 502 indica que la puerta de enlace no está respondiendo, normalmente por mantenimiento o saturación del concentrador. Te recomiendo que revises la página de estado de servicios. Si el problema persiste por más de 15 minutos, por favor abre un ticket para reportarlo.",
+    "trace_id": "ed998584989c658d466579fb28205b63",
+    "expected_intent": "tech",
+    "tipo": "directa",
+    "acierto": true
+  },
+  {
+    "query": "olvide mi contrasena corporativa y no puedo entrar",
+    "intent": "tech",
+    "response": "Para restablecer tu contraseña corporativa, elige la opción de recuperación en la pantalla de inicio de sesión y sigue el enlace que llega a tu correo alterno registrado. Si no tienes un correo alterno configurado, debes abrir un ticket en la mesa de servicio con verificación de identidad por videollamada.",
+    "trace_id": "e4af2f5923cbc4b774d4d683c5d98aae",
+    "expected_intent": "tech",
+    "tipo": "directa",
+    "acierto": true
+  },
+  {
+    "query": "quiero instalar una herramienta que no viene en el computador",
+    "intent": "tech",
+    "response": "No puedes instalar software que no esté en el catálogo autorizado. Si necesitas un programa específico, debes hacer una solicitud con justificación y revisión de seguridad.",
+    "trace_id": "ea103ed83196e6d879be5ffa946587c3",
+    "expected_intent": "tech",
+    "tipo": "parafraseada",
+    "acierto": true
+  },
+  {
+    "query": "cuanto se demora el pago de un reembolso de gastos",
+    "intent": "finance",
+    "response": "Los reembolsos aprobados antes del día 20 se pagan en el ciclo de la primera quincena del mes siguiente. Los radicados después de esa fecha entran al ciclo posterior.",
+    "trace_id": "376cce38dc7be1649e42f7cb10cd3eda",
+    "expected_intent": "finance",
+    "tipo": "directa",
+    "acierto": true
+  },
+  {
+    "query": "un proveedor me pregunta por que no le han pagado su factura",
+    "intent": "finance",
+    "response": "Consulta el estado de la factura en el módulo de Cuentas por Pagar con el número de radicado. Si la factura no aparece radicada, el proveedor debe cargarla en el portal antes de que inicie el conteo del plazo de pago.",
+    "trace_id": "b800c067fee59a7083aa4753b2bc7a0f",
+    "expected_intent": "finance",
+    "tipo": "directa",
+    "acierto": true
+  },
+  {
+    "query": "necesito plata por adelantado para un viaje de trabajo",
+    "intent": "finance",
+    "response": "Puedes solicitar un anticipo de viáticos junto con la autorización del viaje. Este anticipo se desembolsa hasta tres días hábiles antes de la salida.",
+    "trace_id": "c95c33839447ffcdb98b014f2422b154",
+    "expected_intent": "finance",
+    "tipo": "parafraseada",
+    "acierto": true
+  },
+  {
+    "query": "me pagaron mal la quincena, me falto plata",
+    "intent": "hr",
+    "response": "Debes reportar el error a nómina utilizando el formulario de Novedades de Nómina dentro de los cinco días hábiles siguientes al pago. Los ajustes verificados se abonan en la quincena siguiente o antes, si el error supera el 10% del salario.",
+    "trace_id": "b8027843723c47c08982d0056aefee99",
+    "expected_intent": "hr",
+    "tipo": "borde_ambiguo",
+    "acierto": true
+  },
+  {
+    "query": "no puedo entrar al portal de nomina, me sale error de acceso",
+    "intent": "tech",
+    "response": "El problema de acceso al portal de nómina es técnico y debe ser atendido por el equipo de TI. Te sugiero que contactes a ellos para resolver el inconveniente.",
+    "trace_id": "2b997247b7273550cf3ac13e78db0a7e",
+    "expected_intent": "tech",
+    "tipo": "borde_ambiguo",
+    "acierto": true
+  },
+  {
+    "query": "voy a renunciar el mes entrante, que hago con el computador que me asignaron",
+    "intent": "hr",
+    "response": "Debes devolver el equipo de cómputo, los accesorios asignados y cualquier documento físico de la compañía. La devolución se coordina con tu líder y con el área de tecnología. Además, debes agendar la devolución del equipo con la mesa de servicio durante tus últimos tres días. TI verificará el estado físico, ejecutará el borrado seguro y emitirá el paz y salvo tecnológico necesario para el proceso de retiro.",
+    "trace_id": "202b6b1383e5b48fd4450b7bf1aaac3e",
+    "expected_intent": "hr",
+    "tipo": "borde_multi_intencion",
+    "acierto": true
+  },
+  {
+    "query": "cual es la capital de Australia",
+    "intent": "fuera_de_alcance",
+    "response": "Por favor, aclara tu solicitud.",
+    "trace_id": "778035448993ec1081952558708b5a3c",
+    "expected_intent": "fuera_de_alcance",
+    "tipo": "borde_fuera_de_alcance",
+    "acierto": true
+  },
+  {
+    "query": "hola",
+    "intent": "fuera_de_alcance",
+    "response": "Por favor, aclara tu solicitud para poder ayudarte.",
+    "trace_id": "d619a5652914e767a2794010990de399",
+    "expected_intent": "fuera_de_alcance",
+    "tipo": "borde_mal_formada",
+    "acierto": true
+  }
+]
