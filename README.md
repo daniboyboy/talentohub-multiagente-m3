@@ -30,12 +30,15 @@ Cada agente RAG es una cadena LCEL: `retriever → prompt → modelo → parser`
 ```
 ├── multi_agent_system.ipynb    Notebook principal, 6 secciones
 ├── src/
-│   └── multi_agent_system.py   Implementación del sistema
+│   ├── multi_agent_system.py   Implementación del sistema
+│   └── evaluator.py            Agente evaluador (bonus)
 ├── scripts/
 │   ├── build_index.py          Construye el índice vectorial de un dominio
 │   ├── test_retrieval.py       Prueba la recuperación sin llamar al LLM
 │   ├── run_query.py            Ejecuta una consulta suelta
 │   ├── run_golden.py           Corre el golden dataset completo
+│   ├── run_evaluator.py        Puntúa las respuestas y registra scores (bonus)
+│   ├── ver_evaluacion.py       Muestra la tabla de puntajes de una corrida
 │   └── smoke_test.py           Verifica conexión con OpenAI y Langfuse
 ├── data/
 │   ├── hr_docs/                60 chunks — Recursos Humanos
@@ -137,6 +140,13 @@ Probar solo la recuperación, sin gastar llamadas al LLM:
 python scripts/test_retrieval.py hr
 ```
 
+Evaluar la calidad de las respuestas de una corrida y registrar los puntajes en Langfuse:
+
+```bash
+python scripts/run_evaluator.py golden-run-v1
+python scripts/ver_evaluacion.py golden-run-v1
+```
+
 ## Decisiones técnicas
 
 ### Chunking estructural por bloque Q&A
@@ -221,13 +231,40 @@ El dataset cubre los tres dominios con formulaciones directas y parafraseadas, m
 | Fuera de alcance | "cuál es la capital de Australia" | No debe llamar ninguna tool |
 | Mal formada | "hola" | Sin intención identificable |
 
+## Bonus: agente evaluador
+
+Un segundo LLM actúa como juez de la calidad de cada respuesta. Recibe la consulta original y la respuesta final del sistema, y emite un puntaje de 1 a 10 con justificación. El puntaje se registra en Langfuse con `create_score`, asociado a la traza de esa consulta.
+
+### Diseño
+
+**Salida estructurada con Pydantic** en lugar de parseo de texto. El modelo está obligado por esquema a devolver enteros entre 1 y 10, de modo que una respuesta como "yo diría que un 8" no puede romper el pipeline.
+
+**Tres dimensiones más un puntaje global**: relevancia (atiende lo que se preguntó), completitud (cubre lo necesario para actuar) y precisión (es específica y verificable en lugar de vaga). Cada una se registra como un score independiente, lo que permite filtrar en el dashboard por la dimensión que falla.
+
+**La rúbrica premia admitir ignorancia.** Una respuesta que declara honestamente no tener el dato puntúa mejor que una que inventa, y una respuesta correcta pero genérica no supera 6. Sin esa instrucción explícita, un juez LLM tiende a premiar respuestas largas y bien redactadas aunque no aporten información concreta.
+
+**No re-ejecuta el pipeline.** El evaluador lee los resultados ya guardados de la corrida (consulta, respuesta y `trace_id`) y hace una sola llamada al LLM por caso, en lugar de tres.
+
+### Resultados sobre `golden-run-v1`
+
+**Puntaje promedio: 8.21/10** sobre las 14 respuestas, con rango de 6 a 10.
+
+Las tres respuestas peor puntuadas comparten el mismo defecto, identificado por el juez: indican correctamente a qué área acudir, pero no incluyen el procedimiento concreto ni los plazos. No es alucinación ni error de enrutamiento: es que el retriever recuperó el chunk que identifica al área responsable y no el que contiene el procedimiento. Es el mismo patrón descrito en las limitaciones sobre densidad temática frente a atributo consultado.
+
+| Puntaje | Consulta |
+|---|---|
+| 6/10 | "no puedo entrar al portal de nómina, me sale error de acceso" |
+| 7/10 | "quiero instalar una herramienta que no viene en el computador" |
+| 7/10 | "un proveedor me pregunta por qué no le han pagado su factura" |
+
 ## Limitaciones conocidas
 
 - **El golden dataset tiene sesgo de origen.** Corpus, descripciones de tools y consultas de prueba fueron construidos por el mismo proceso, lo que hace que compartan vocabulario. El 100% de routing accuracy mide coherencia interna del sistema, no robustez frente a consultas reales de empleados. Una validación honesta requeriría consultas recolectadas de la mesa de soporte real.
 - **Sin memoria conversacional.** Cada consulta se atiende de forma independiente. Un seguimiento como "¿y cuánto se demora eso?" no tiene contexto previo.
 - **Consultas multi-intención se resuelven parcialmente.** El orquestador elige un solo dominio. Una consulta que legítimamente requiere dos agentes recibe respuesta de uno.
 - **El corpus es sintético.** Refleja políticas verosímiles de una empresa ficticia, no documentación real.
-- **Sin evaluación automática de calidad de respuesta.** Se mide el enrutamiento, no si la respuesta generada es correcta y completa.
+- **El evaluador arrastra el sesgo de los jueces LLM.** Pese a que la rúbrica instruye lo contrario, tiende a penalizar la completitud de respuestas breves aunque sean correctas: las dos consultas fuera de alcance, donde pedir aclaración es la respuesta correcta, recibieron 7 y 8 en lugar de puntaje alto. Los puntajes sirven para ordenar respuestas de peor a mejor, no como medida absoluta de calidad.
+- **El evaluador no verifica contra fuente.** Puntúa la respuesta frente a la consulta, sin comparar contra los chunks recuperados ni contra una respuesta de referencia. Una respuesta bien redactada pero factualmente incorrecta podría puntuar alto.
 - **La recuperación privilegia densidad temática sobre atributo consultado.** Consultas que preguntan por un atributo específico ("cuándo", "cuánto") pueden recuperar chunks del mismo tema que no responden ese atributo. `k=3` mitiga el efecto pero no lo elimina.
 
 ## Notas de configuración
