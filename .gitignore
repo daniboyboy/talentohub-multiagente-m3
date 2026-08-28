@@ -1,0 +1,15 @@
+# Entorno virtual
+.venv/
+
+# Secretos
+.env
+
+# Cache de Python
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Indices vectoriales generados
+indexes/
